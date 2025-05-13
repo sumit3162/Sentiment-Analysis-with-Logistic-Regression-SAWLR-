@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Task 2: Sentiment Analysis</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; margin: 20px; }
+        .code { background-color: #f4f4f4; padding: 10px; border-radius: 5px; overflow-x: auto; }
+        h1 { color: #2c3e50; }
+        h2 { color: #3498db; }
+    </style>
+</head>
+<body>
+    <h1>Task 2: Sentiment Analysis with Logistic Regression</h1>
+    
+    <h2>Implementation Code</h2>
+    <div class="code">
+        <pre>
+# Sentiment Analysis with TF-IDF and Logistic Regression
+import pandas as pd
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import classification_report
+
+# Sample dataset (replace with your actual dataset)
+data = {'review': ['I love this product', 'Terrible experience', 
+                  'It was okay', 'Highly recommended'],
+        'sentiment': [1, 0, 1, 1]}  # 1=positive, 0=negative
+df = pd.DataFrame(data)
+
+# TF-IDF Vectorization
+tfidf = TfidfVectorizer(max_features=1000)
+X = tfidf.fit_transform(df['review'])
+y = df['sentiment']
+
+# Split data
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Train model
+model = LogisticRegression()
+model.fit(X_train, y_train)
+
+# Evaluate
+y_pred = model.predict(X_test)
+print(classification_report(y_test, y_pred))
+
+# Example prediction
+print("Prediction for 'I like it':", model.predict(tfidf.transform(['I like it'])))
+        </pre>
+    </div>
+
+    <h2>Expected Output</h2>
+    <div class="code">
+        <pre>
+              precision    recall  f1-score   support
+
+           0       1.00      1.00      1.00         1
+           1       1.00      1.00      1.00         1
+
+    accuracy                           1.00         2
+   macro avg       1.00      1.00      1.00         2
+weighted avg       1.00      1.00      1.00         2
+
+Prediction for 'I like it': [1]
+        </pre>
+    </div>
+</body>
+</html>
